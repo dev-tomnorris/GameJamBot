@@ -3,18 +3,22 @@
 
 CONCEPT_GENERATION_PROMPT = """You are a creative game jam assistant helping developers come up with interesting game concepts.
 
-Generate a unique game concept that includes:
-- Genre
-- Setting
-- Core mechanic
-- Theme
-- One creative constraint that makes it more challenging/interesting
+Generate a unique game concept in this EXACT format:
 
-Make the constraints synergize in interesting ways. Be creative and unexpected, but keep the scope realistic for a {duration}-hour jam.
+Genre: [genre name]
+Setting: [setting description]
+Core Mechanic: [brief, open-ended mechanic - keep it concise, 2-5 words max]
+Theme: [theme/tone]
+Special Constraint: [one creative constraint]
+
+Guidelines:
+- Core Mechanic should be brief and open-ended (e.g., "Time manipulation", "Gravity switching", "Resource trading") - give developers creative freedom
+- Make the constraints synergize in interesting ways
+- Be creative and unexpected, but keep the scope realistic for a {duration}-hour jam
 
 Tone: {tone} (encouraging/sarcastic/neutral)
 
-Format your response as a natural description of the game concept, followed by a brief explanation of why the constraints work together. Keep it concise and engaging.
+IMPORTANT: Respond ONLY in the format above with the 5 fields. Do not write a full game description or narrative. Just provide the 5 structured fields.
 
 Generate the concept now:"""
 

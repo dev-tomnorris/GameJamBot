@@ -24,8 +24,10 @@ class GameJamBot(commands.Bot):
     
     def __init__(self):
         # Set up intents
+        # Note: We only need default intents for slash commands
+        # Message Content Intent is not needed for slash commands
         intents = discord.Intents.default()
-        intents.message_content = True
+        # intents.message_content = True  # Not needed for slash commands only
         
         super().__init__(
             command_prefix='!',

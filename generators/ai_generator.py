@@ -1,6 +1,7 @@
 """AI-powered game concept generator with template fallback."""
 
 import logging
+import random
 import re
 from typing import Dict, Optional
 from ai.ollama_client import ollama_client
@@ -46,8 +47,8 @@ class AIGenerator:
                 return {"error": "AI service unavailable"}
         
         try:
-            # Generate prompt
-            duration = 48  # Default duration
+            # Generate prompt with random duration (like template generator)
+            duration = random.choice([24, 48, 72, 96, 120, 144])
             prompt = prompts.format_concept_prompt(
                 duration=duration,
                 tone=tone,
@@ -239,35 +240,63 @@ class AIGenerator:
         Returns:
             Concept dictionary
         """
-        # Try to extract structured information, but also preserve the full description
+        import re
+        
         concept = {
-            "description": response,
             "difficulty": difficulty,
             "time_limit": str(duration),
             "is_ai": True
         }
         
-        # Try to extract genre if mentioned
+        # Parse structured format: "Field: value"
+        lines = response.split('\n')
+        
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+            
+            # Match "Field: value" pattern
+            match = re.match(r'^([^:]+):\s*(.+)$', line, re.IGNORECASE)
+            if match:
+                field_name = match.group(1).strip().lower()
+                field_value = match.group(2).strip()
+                
+                # Map field names to concept keys
+                if 'genre' in field_name:
+                    concept["genre"] = field_value
+                elif 'setting' in field_name:
+                    concept["setting"] = field_value
+                elif 'mechanic' in field_name or 'core' in field_name:
+                    concept["mechanic"] = field_value
+                elif 'theme' in field_name:
+                    concept["theme"] = field_value
+                elif 'constraint' in field_name or 'special' in field_name:
+                    concept["constraint"] = field_value
+        
+        # If genre was specified, use it (overriding parsed value)
         if genre:
             concept["genre"] = genre
-        else:
-            # Try to find genre in response
-            for g in template_generator.genres:
-                if g.lower() in response.lower():
-                    concept["genre"] = g
-                    break
         
-        # Try to extract explanation if present
-        explanation_keywords = ["why", "because", "this works", "synergy", "interesting"]
-        sentences = response.split('.')
-        explanation_sentences = []
-        
-        for sentence in sentences:
-            if any(keyword in sentence.lower() for keyword in explanation_keywords):
-                explanation_sentences.append(sentence.strip())
-        
-        if explanation_sentences:
-            concept["explanation"] = " ".join(explanation_sentences)
+        # If we didn't get structured format, try fallback parsing
+        if not all(key in concept for key in ["genre", "setting", "mechanic", "theme", "constraint"]):
+            logger.warning("AI response not in expected structured format, attempting fallback parsing")
+            
+            # Try to extract genre if mentioned
+            if "genre" not in concept:
+                if genre:
+                    concept["genre"] = genre
+                else:
+                    # Try to find genre in response
+                    for g in template_generator.genres:
+                        if g.lower() in response.lower():
+                            concept["genre"] = g
+                            break
+            
+            # Store full response as description if parsing failed
+            if not all(key in concept for key in ["genre", "setting", "mechanic", "theme"]):
+                concept["description"] = response
+                concept["is_ai"] = True
         
         return concept
 

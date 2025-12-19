@@ -14,8 +14,11 @@ def format_concept_message(concept: Dict[str, str], is_ai: bool = False) -> str:
     Returns:
         Formatted message string
     """
-    if is_ai and "description" in concept:
-        # AI-generated format with description
+    # Check if we have structured fields (both AI and template use this format)
+    has_structured_fields = all(key in concept for key in ["genre", "setting", "mechanic", "theme"])
+    
+    if is_ai and "description" in concept and not has_structured_fields:
+        # Legacy AI format with full description (fallback)
         message = "🎮 Game Jam Concept Generator 🎮\n\n"
         message += concept.get("description", "")
         
@@ -39,7 +42,7 @@ def format_concept_message(concept: Dict[str, str], is_ai: bool = False) -> str:
         
         return message
     else:
-        # Template-based format
+        # Structured format (used by both template and AI)
         message = "🎮 Game Jam Concept Generator 🎮\n\n"
         message += f"**Genre:** {concept.get('genre', 'Unknown')}\n"
         message += f"**Setting:** {concept.get('setting', 'Unknown')}\n"
@@ -52,7 +55,14 @@ def format_concept_message(concept: Dict[str, str], is_ai: bool = False) -> str:
         if "time_limit" in concept:
             message += f"**Time Limit:** {concept['time_limit']} hours\n"
         
-        message += "\nGood luck, you'll need it! 🎲"
+        # Add closing message
+        closing_messages = [
+            "Good luck, you'll need it! 🎲",
+            "Now stop reading and start coding! ⏰",
+            "Time to make something awesome! 🚀",
+        ]
+        import random
+        message += f"\n{random.choice(closing_messages)}"
         
         return message
 
