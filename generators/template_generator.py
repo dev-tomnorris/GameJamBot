@@ -73,7 +73,7 @@ SPECIAL_CONSTRAINTS = [
     "Only one enemy type"
 ]
 
-TIME_LIMITS = [24, 48, 72]
+TIME_LIMITS = [24, 48, 72, 96, 120, 144]
 
 
 class TemplateGenerator:

@@ -13,8 +13,15 @@ Special Constraint: [one creative constraint]
 
 Guidelines:
 - Core Mechanic should be brief and open-ended (e.g., "Time manipulation", "Gravity switching", "Resource trading") - give developers creative freedom
+- Be CREATIVE and UNEXPECTED - don't limit yourself to common genres, settings, or mechanics. Think outside the box!
+- AVOID repetitive settings - vary your settings significantly. Don't repeatedly use libraries, bookstores, or similar knowledge-based locations. Explore diverse environments!
+- Genres can be unique combinations or new concepts (e.g., "Rhythm-based Metroidvania", "Cozy Horror", "Reverse Tower Defense")
+- Settings should be diverse and creative (e.g., "Inside a living organism", "A world made of sound", "A collapsing space station", "A city that rebuilds itself daily", "The space between thoughts", "A factory that produces emotions", "An ocean of clouds")
+- Mechanics should be innovative and open-ended to spark creativity
+- Themes can be abstract or unique (e.g., "Impermanence", "Miscommunication", "The uncanny")
+- Constraints should be creative and challenging
 - Make the constraints synergize in interesting ways
-- Be creative and unexpected, but keep the scope realistic for a {duration}-hour jam
+- Keep the scope realistic for a {duration}-hour jam
 
 Tone: {tone} (encouraging/sarcastic/neutral)
 
